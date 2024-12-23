@@ -10,10 +10,12 @@ import io
 # FastAPI 애플리케이션 생성
 app = FastAPI()
 index_class = {}
-with open("imagenet_classes.txt") as file:
-    for i, line in enumerate(file):
-        index_class[i] = line
-
+try:
+    with open("imagenet_classes.txt") as file:
+        for i, line in enumerate(file):
+            index_class[i] = line
+except Exception as e:
+    print("class-index file loading faile")
 # CORS 설정 추가
 app.add_middleware(
     CORSMiddleware,
@@ -24,8 +26,11 @@ app.add_middleware(
 )
 
 # ResNet 모델 로드
-model = models.resnet50(pretrained=True)
-model.eval()
+try:
+    model = models.resnet50(pretrained=True)
+    model.eval()
+except Exception as e:
+    print("Model loading failed")
 
 # 이미지 변환 파이프라인 정의
 transform = transforms.Compose([
