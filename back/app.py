@@ -35,11 +35,15 @@ except Exception as e:
     print("Model loading failed")
 
 # 이미지 변환 파이프라인 정의
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
+try:
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+    print("Transformation Loaded")
+except Exception as e:
+    print("Transformation failed")
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):

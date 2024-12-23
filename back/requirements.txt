@@ -1,7 +1,6 @@
 fastapi==0.95.2
 uvicorn==0.22.0
 torch==2.0.1
-pillow==9.5.0
 torchvision==0.15.2
+pillow==9.4.0  # 또는 9.5.0
 python-multipart
-
