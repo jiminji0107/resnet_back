@@ -19,7 +19,7 @@ except Exception as e:
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://resnet-web.vercel.app"],
+    allow_origins=["https://resnet-web-jiminjis-projects.vercel.app/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
