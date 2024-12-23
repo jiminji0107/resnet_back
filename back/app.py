@@ -53,18 +53,29 @@ async def predict(file: UploadFile = File(...)):
             return JSONResponse(content={"error": "Uploaded file is not a valid image"}, status_code=400)
 
         # 이미지 전처리
-        transformed_image = transform(image).unsqueeze(0)  # 배치 차원 추가
+        try:
+            transformed_image = transform(image).unsqueeze(0)  # 배치 차원 추가
+            print("Transformed")
+        except Exception as e:
+            print("Transform failed")
 
         # 모델로 예측 수행
-        with torch.no_grad():
-            outputs = model(transformed_image)
-            _, predicted = torch.max(outputs, 1)
+        try:
+            with torch.no_grad():
+                outputs = model(transformed_image)
+                _, predicted = torch.max(outputs, 1)
+            print("Predict Success")
+        except Exception as e:
+            print("Prediction error")
 
         # 이미지를 base64로 인코딩
-        buffered = io.BytesIO()
-        image.save(buffered, format="JPEG")
-        image_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
-
+        try:
+            buffered = io.BytesIO()
+            image.save(buffered, format="JPEG")
+            image_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+            print("Image saved")
+        except Exception as e:
+            print("Image uploading failed")
         # 결과 반환
         return {
             "class": index_class[int(predicted.item())],
