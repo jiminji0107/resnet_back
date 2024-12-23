@@ -37,6 +37,7 @@ transform = transforms.Compose([
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     try:
+        print("File received:", file.filename)
         # 파일이 이미지인지 확인
         try:
             image = Image.open(file.file).convert("RGB")
