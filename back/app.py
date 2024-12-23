@@ -71,11 +71,14 @@ async def predict(file: UploadFile = File(...)):
             image.save(buffered, format="JPEG")
             image_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
             print("Image saved")
+
+            image_path = f"static/{file.filename}"
+            image.save(image_path, format="JPEG")
         except Exception as e:
             print("Image uploading failed")
         return {
             "class": index_class[int(predicted.item())],
-            "image": f"data:image/jpeg;base64,{image_base64}"
+            "image_url": f"https://resnet-back.onrender.com/{image_path}"
         }
 
     except Exception as e:
