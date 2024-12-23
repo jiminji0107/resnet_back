@@ -14,12 +14,13 @@ try:
     with open("imagenet_classes.txt") as file:
         for i, line in enumerate(file):
             index_class[i] = line
+    print("File Loaded")
 except Exception as e:
-    print("class-index file loading faile")
+    print("class-index file loading failed")
 # CORS 설정 추가
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://resnet-web.vercel.app/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,6 +30,7 @@ app.add_middleware(
 try:
     model = models.resnet50(pretrained=True)
     model.eval()
+    print("Model Loaded")
 except Exception as e:
     print("Model loading failed")
 
@@ -46,6 +48,7 @@ async def predict(file: UploadFile = File(...)):
         # 파일이 이미지인지 확인
         try:
             image = Image.open(file.file).convert("RGB")
+            print("Image opened")
         except UnidentifiedImageError:
             return JSONResponse(content={"error": "Uploaded file is not a valid image"}, status_code=400)
 
